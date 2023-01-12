@@ -23,6 +23,7 @@ final class Mailcheck
         'comcast.net',
         'cox.net',
         'earthlink.net',
+        'fastmail.com',
         'gmail.com',
         'google.com',
         'googlemail.com',
@@ -212,7 +213,8 @@ final class Mailcheck
             if (filled($closestTopLevelDomain) && !same_string($closestTopLevelDomain, $this->topLevelDomain)) {
                 // The email address may have a misspelled top-level domain; return a suggestion.
                 // $closestDomain = str_replace($this->topLevelDomain, $closestTopLevelDomain, $closestDomain);
-                $closestDomain = preg_replace($this->topLevelDomain . '$', $closestTopLevelDomain, $closestDomain);
+
+                $closestDomain = preg_replace(sprintf('/%s$/', $this->topLevelDomain), $closestTopLevelDomain, $closestDomain);
                 $found = true;
             }
 
