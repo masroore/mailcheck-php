@@ -8,7 +8,7 @@ Mailcheck will offer up suggestions for second and top level domains too. For ex
 
 ## Installation
 
-> **Requires [PHP 8.0+](https://php.net/releases/)**
+> **Requires [PHP 8.1+](https://php.net/releases/)**
 
 You can install the package via composer:
 
