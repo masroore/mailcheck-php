@@ -10,8 +10,6 @@ final class Mailcheck
     public const SECOND_LEVEL_THRESHOLD = 2;
     public const TOP_LEVEL_THRESHOLD = 2;
 
-    private string $account = '';
-
     /**
      * @var string[]
      */
@@ -46,6 +44,18 @@ final class Mailcheck
         'web.de',
         'xtra.co.nz',
         'ymail.com',
+    ];
+
+    /**
+     * @var string[]
+     */
+    private array $secondLevelDomains = [
+        'gmx',
+        'hotmail',
+        'live',
+        'mail',
+        'outlook',
+        'yahoo',
     ];
 
     /**
@@ -94,17 +104,7 @@ final class Mailcheck
         'us',
     ];
 
-    /**
-     * @var string[]
-     */
-    private array $secondLevelDomains = [
-        'gmx',
-        'hotmail',
-        'live',
-        'mail',
-        'outlook',
-        'yahoo',
-    ];
+    private string $account = '';
 
     private string $domain = '';
 
@@ -170,7 +170,7 @@ final class Mailcheck
             }
         }
 
-        return ($minDist <= $threshold) && (!blank($closestDomain)) ? $closestDomain : null;
+        return ($minDist <= $threshold) && (filled($closestDomain)) ? $closestDomain : null;
     }
 
     public function suggestDomain(string $email, ?callable $distanceFunction = null): ?string
@@ -186,7 +186,7 @@ final class Mailcheck
         }
 
         $closestDomain = self::findClosestDomain($this->domain, $this->domains, $distanceFunction, self::DOMAIN_THRESHOLD);
-        if (!blank($closestDomain)) {
+        if (filled($closestDomain)) {
             if (same_string($closestDomain, $this->domain)) {
                 // The email address exactly matches one of the supplied domains; do not return a suggestion.
                 return null;
@@ -197,19 +197,19 @@ final class Mailcheck
         }
 
         // The email address does not closely match one of the supplied domains
-        if (!blank($this->domain)) {
+        if (filled($this->domain)) {
             $closestDomain = $this->domain;
             $found = false;
 
             $closestSecondLevelDomain = self::findClosestDomain($this->secondLevelDomain, $this->secondLevelDomains, $distanceFunction, self::SECOND_LEVEL_THRESHOLD);
-            if (!blank($closestSecondLevelDomain) && !same_string($closestSecondLevelDomain, $this->secondLevelDomain)) {
+            if (filled($closestSecondLevelDomain) && !same_string($closestSecondLevelDomain, $this->secondLevelDomain)) {
                 // The email address may have a misspelled second-level domain; return a suggestion.
                 $closestDomain = str_replace($this->secondLevelDomain, $closestSecondLevelDomain, $closestDomain);
                 $found = true;
             }
 
             $closestTopLevelDomain = self::findClosestDomain($this->topLevelDomain, $this->topLevelDomains, $distanceFunction, self::TOP_LEVEL_THRESHOLD);
-            if (!blank($closestTopLevelDomain) && !same_string($closestTopLevelDomain, $this->topLevelDomain)) {
+            if (filled($closestTopLevelDomain) && !same_string($closestTopLevelDomain, $this->topLevelDomain)) {
                 // The email address may have a misspelled top-level domain; return a suggestion.
                 // $closestDomain = str_replace($this->topLevelDomain, $closestTopLevelDomain, $closestDomain);
                 $closestDomain = preg_replace($this->topLevelDomain . '$', $closestTopLevelDomain, $closestDomain);
