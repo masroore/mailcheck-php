@@ -25,6 +25,7 @@ composer require masroore/mailcheck
 # Kaiju\Mailcheck\EmailParts Object
 # (
 #     [fullAddress] => user@gmail.com
+#     [originalAddress] => user@gmil.con
 #     [account] => user
 #     [domain] => gmail.com
 # )
