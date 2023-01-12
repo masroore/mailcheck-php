@@ -20,15 +20,18 @@ composer require masroore/mailcheck
 
 ```php
 > $mailcheck = new Kaiju\Mailcheck\Mailcheck();
-> print_r($mailcheck->suggest("user@hotma.com"));
-# => {
-#   :account      =>"user",
-#   :domain       =>"hotmail.com",
-#   :fullAddress  =>"user@hotmail.com"
-# }
+> print_r($mailcheck->suggest("user@gmil.con"));
+
+# Kaiju\Mailcheck\EmailParts Object
+# (
+#     [fullAddress] => user@gmail.com
+#     [account] => user
+#     [domain] => gmail.com
+# )
 ```
 
 Returns `null` if no suggestion:
+
 ```php
 > $mailcheck->suggest("user@hotmail.com")
 # => null
@@ -48,7 +51,6 @@ $mailcheck->setDomains(['customdomain.com', 'anotherdomain.net']); // replaces e
 $mailcheck->setSecondLevelDomains(['domain', 'yetanotherdomain']); // replaces existing SLDs
 $mailcheck->setTopLevelDomains(['com.au', 'ru']);  // replaces existing TLDs
 ```
-
 
 ## Contributing
 
