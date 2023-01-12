@@ -2,11 +2,9 @@
 
 The PHP library that suggests a right domain when your users misspell it in an email address. See the original at https://github.com/mailcheck/mailcheck.
 
-When your user types in "user@hotnail.con", Mailcheck will suggest "user@hotmail.com".
+When your user types in "user@gmil.con", Mailcheck will suggest "user@gmail.com".
 
-Mailcheck will offer up suggestions for top level domains too, and suggest ".com" when a user types in "user@hotmail.cmo".
-
-mailcheck-php is part of the [Mailcheck family](http://getmailcheck.org), and we're always on the lookout for more ports and adaptions. Get in touch!
+Mailcheck will offer up suggestions for second and top level domains too. For example, when a user types in "user@hotmail.cmo", "hotmail.com" will be suggested. Similarly, if only the second level domain is misspelled, it will be corrected independently of the top level domain.
 
 ## Installation
 
@@ -36,13 +34,25 @@ Returns `null` if no suggestion:
 # => null
 ```
 
-Pass in a custom list of domains and TLDs:
+Domains
+-------
+
+Mailcheck has inbuilt defaults if the `domains`, `secondLevelDomains` or `topLevelDomains` options aren't provided. We still recommend supplying your own domains based on the distribution of your users.
+
+#### Adding your own Domains ####
+
+You can replace Mailcheck's default domain/TLD suggestions by supplying replacements:
+
 ```php
-$mailcheck->setDomains(["gmail.com", "hotmail.com", "aol.com"]);
-$mailcheck->setTopLevelDomains(["com", "net", "org"]);
+$mailcheck->setDomains(['customdomain.com', 'anotherdomain.net']); // replaces existing domains
+$mailcheck->setSecondLevelDomains(['domain', 'yetanotherdomain']); // replaces existing SLDs
+$mailcheck->setTopLevelDomains(['com.au', 'ru']);  // replaces existing TLDs
 ```
 
+
 ## Contributing
+
+Let's make Mailcheck awesome. We're on the lookout for maintainers and [contributors](https://github.com/masroore/mailcheck/contributors).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
