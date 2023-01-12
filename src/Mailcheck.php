@@ -234,13 +234,13 @@ final class Mailcheck
         return null;
     }
 
-    public function suggest(string $email): ?EmailParts
+    public function suggest(string $email): ?EmailSuggestion
     {
         $suggestedDomain = $this->suggestDomain($email);
 
         return blank($suggestedDomain)
             ? null
-            : new EmailParts($this->getOriginalAddress(), $this->getAccount(), $suggestedDomain);
+            : new EmailSuggestion($this->getOriginalAddress(), $this->getAccount(), $suggestedDomain);
     }
 
     public function getDomain(): string

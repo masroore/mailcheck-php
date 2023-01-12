@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kaiju\Mailcheck;
 
-final class EmailParts
+final class EmailSuggestion
 {
     public readonly string $fullAddress;
 

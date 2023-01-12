@@ -22,7 +22,7 @@ composer require masroore/mailcheck
 > $mailcheck = new Kaiju\Mailcheck\Mailcheck();
 > print_r($mailcheck->suggest("user@gmil.con"));
 
-# Kaiju\Mailcheck\EmailParts Object
+# Kaiju\Mailcheck\EmailSuggestion Object
 # (
 #     [fullAddress] => user@gmail.com
 #     [originalAddress] => user@gmil.con
