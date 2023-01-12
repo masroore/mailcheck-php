@@ -8,7 +8,7 @@ final class EmailParts
 {
     public readonly string $fullAddress;
 
-    public function __construct(public readonly string $account, public readonly string $domain)
+    public function __construct(public readonly string $originalAddress, public readonly string $account, public readonly string $domain)
     {
         $this->fullAddress = $this->account . '@' . $this->domain;
     }

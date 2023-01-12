@@ -113,10 +113,12 @@ final class Mailcheck
 
     private string $topLevelDomain = '';
 
+    private string $originalAddress = '';
+
     /**
      * @return string[]
      */
-    public static function getEmailParts(string $email): array
+    public static function splitEmailParts(string $email): array
     {
         if (false !== $lastAtPos = strrpos($email, '@')) {
             return [substr($email, 0, $lastAtPos), substr($email, $lastAtPos + 1)];
@@ -125,9 +127,10 @@ final class Mailcheck
         return [null, null];
     }
 
-    private function splitEmail(string $email): bool
+    private function scanEmail(string $email): bool
     {
-        [$this->account, $this->domain] = self::getEmailParts(mb_strtolower(trim($email)));
+        $this->originalAddress = mb_strtolower(trim($email));
+        [$this->account, $this->domain] = self::splitEmailParts($this->originalAddress);
         if (blank($this->domain) || blank($this->account)) {
             return false;
         }
@@ -177,7 +180,7 @@ final class Mailcheck
     public function suggestDomain(string $email, ?callable $distanceFunction = null): ?string
     {
         // If the email is invalid, or a valid 2nd-level + top-level, do not suggest anything.
-        if (!$this->splitEmail($email) ||
+        if (!$this->scanEmail($email) ||
             (
                 in_array($this->topLevelDomain, $this->topLevelDomains, true) &&
                 in_array($this->secondLevelDomain, $this->secondLevelDomains, true)
@@ -235,7 +238,9 @@ final class Mailcheck
     {
         $suggestedDomain = $this->suggestDomain($email);
 
-        return blank($suggestedDomain) ? null : new EmailParts($this->account, $suggestedDomain);
+        return blank($suggestedDomain)
+            ? null
+            : new EmailParts($this->getOriginalAddress(), $this->getAccount(), $suggestedDomain);
     }
 
     public function getDomain(): string
@@ -299,5 +304,15 @@ final class Mailcheck
     public function setSecondLevelDomains(array $domains): void
     {
         $this->secondLevelDomains = $domains;
+    }
+
+    public function getOriginalAddress(): string
+    {
+        return $this->originalAddress;
+    }
+
+    public function getAccount(): string
+    {
+        return $this->account;
     }
 }
