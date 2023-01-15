@@ -14,7 +14,7 @@ final class SplitEmailTest extends BaseTestCase
         $this->mailcheck->suggestDomain($email);
 
         return [
-            'address' => $this->mailcheck->getAccount(),
+            'account' => $this->mailcheck->getAccount(),
             'domain' => $this->mailcheck->getDomain(),
             'top_level_domain' => $this->mailcheck->getTopLevelDomain(),
             'second_level_domain' => $this->mailcheck->getSecondLevelDomain(),
@@ -25,7 +25,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('postbox@com');
         $expected = [
-            'address' => 'postbox',
+            'account' => 'postbox',
             'domain' => 'com',
             'top_level_domain' => 'com',
             'second_level_domain' => '',
@@ -37,7 +37,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('test@example.com');
         $expected = [
-            'address' => 'test',
+            'account' => 'test',
             'domain' => 'example.com',
             'top_level_domain' => 'com',
             'second_level_domain' => 'example',
@@ -49,7 +49,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('test@example.co.uk');
         $expected = [
-            'address' => 'test',
+            'account' => 'test',
             'domain' => 'example.co.uk',
             'top_level_domain' => 'co.uk',
             'second_level_domain' => 'example',
@@ -61,7 +61,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('test@mail.randomsmallcompany.co.uk');
         $expected = [
-            'address' => 'test',
+            'account' => 'test',
             'domain' => 'mail.randomsmallcompany.co.uk',
             'top_level_domain' => 'randomsmallcompany.co.uk',
             'second_level_domain' => 'mail',
@@ -73,7 +73,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('"foo@bar"@example.com');
         $expected = [
-            'address' => '"foo@bar"',
+            'account' => '"foo@bar"',
             'domain' => 'example.com',
             'top_level_domain' => 'com',
             'second_level_domain' => 'example',
@@ -93,7 +93,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('contains+alias@example.com');
         $expected = [
-            'address' => 'contains+alias',
+            'account' => 'contains+alias',
             'domain' => 'example.com',
             'top_level_domain' => 'com',
             'second_level_domain' => 'example',
@@ -105,7 +105,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('contains.period@example.com');
         $expected = [
-            'address' => 'contains.period',
+            'account' => 'contains.period',
             'domain' => 'example.com',
             'top_level_domain' => 'com',
             'second_level_domain' => 'example',
@@ -117,7 +117,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('"contains.and.@.symbols.com"@example.com');
         $expected = [
-            'address' => '"contains.and.@.symbols.com"',
+            'account' => '"contains.and.@.symbols.com"',
             'domain' => 'example.com',
             'top_level_domain' => 'com',
             'second_level_domain' => 'example',
@@ -129,7 +129,7 @@ final class SplitEmailTest extends BaseTestCase
     {
         $actual = $this->getDomainParts('"()<>[]:;@,\\\"!#$%&\'*+-/=?^_`{}|\ \ \ \ \ ~\ \ \ \ \ \ \ ?\ \ \ \ \ \ \ \ \ \ \ \ ^_`{}|~.a"@example.com');
         $expected = [
-            'address' => '"()<>[]:;@,\\\"!#$%&\'*+-/=?^_`{}|\ \ \ \ \ ~\ \ \ \ \ \ \ ?\ \ \ \ \ \ \ \ \ \ \ \ ^_`{}|~.a"',
+            'account' => '"()<>[]:;@,\\\"!#$%&\'*+-/=?^_`{}|\ \ \ \ \ ~\ \ \ \ \ \ \ ?\ \ \ \ \ \ \ \ \ \ \ \ ^_`{}|~.a"',
             'domain' => 'example.com',
             'top_level_domain' => 'com',
             'second_level_domain' => 'example',
@@ -140,7 +140,7 @@ final class SplitEmailTest extends BaseTestCase
     public function testTrimSpaces(): void
     {
         $expected = [
-            'address' => 'test',
+            'account' => 'test',
             'domain' => 'example.com',
             'top_level_domain' => 'com',
             'second_level_domain' => 'example',
