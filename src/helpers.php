@@ -60,19 +60,72 @@ if (!function_exists('sift3_distance')) {
     }
 }
 
+if (!function_exists('sift4_distance_simple')) {
+    function sift4_distance_simple(string $s1, string $s2, int $maxOffset = 5): int
+    {
+        if (blank($s1)) {
+            return blank($s2) ? 0 : strlen($s2);
+        }
+        if (blank($s2)) {
+            return strlen($s1);
+        }
+
+        $l1 = strlen($s1);
+        $l2 = strlen($s2);
+
+        $c1 = 0;  // cursor for string 1
+        $c2 = 0;  // cursor for string 2
+        $lcss = 0;  // largest common subsequence
+        $local_cs = 0; // local common substring
+
+        while (($c1 < $l1) && ($c2 < $l2)) {
+            if ($s1[$c1] === $s2[$c2]) {
+                ++$local_cs;
+            } else {
+                $lcss += $local_cs;
+                $local_cs = 0;
+
+                if ($c1 !== $c2) {
+                    $c1 = $c2 = max($c1, $c2); // using max to bypass the need for computer transpositions ('ab' vs 'ba')
+                }
+
+                for ($i = 0; $i < $maxOffset && ($c1 + $i < $l1 || $c2 + $i < $l2); ++$i) {
+                    if (($c1 + $i < $l1) && ($s1[$c1 + $i] === $s2[$c2])) {
+                        $c1 += $i;
+                        ++$local_cs;
+
+                        break;
+                    }
+
+                    if (($c2 + $i < $l2) && ($s1[$c1] === $s2[$c2 + $i])) {
+                        $c2 += $i;
+                        ++$local_cs;
+
+                        break;
+                    }
+                }
+            }
+
+            ++$c1;
+            ++$c2;
+        }
+
+        $lcss += $local_cs;
+
+        return (int) round(max($l1, $l2) - $lcss);
+    }
+}
+
 if (!function_exists('sift4_distance')) {
     function sift4_distance(string $s1, string $s2, int $maxOffset = 5, int $maxDistance = 0): int
     {
-        if (!$s1 || !strlen($s1)) {
-            if (!$s2) {
-                return 0;
-            }
-
-            return strlen($s2);
+        if (blank($s1)) {
+            return blank($s2) ? 0 : strlen($s2);
         }
-        if (!$s2 || !strlen($s2)) {
+        if (blank($s2)) {
             return strlen($s1);
         }
+
         $l1 = strlen($s1);
         $l2 = strlen($s2);
         $c1 = 0; // cursor for string 1
@@ -82,7 +135,7 @@ if (!function_exists('sift4_distance')) {
         $trans = 0; // number of transpositions ('ab' vs 'ba')
         $offset_arr = []; // offset pair array, for computing the transpositions
         while (($c1 < $l1) && ($c2 < $l2)) {
-            if (substr($s1, $c1, 1) == substr($s2, $c2, 1)) {
+            if ($s1[$c1] === $s2[$c2]) {
                 ++$local_cs;
                 $isTrans = false;
                 $i = 0;
@@ -111,9 +164,10 @@ if (!function_exists('sift4_distance')) {
             } else {
                 $lcss += $local_cs;
                 $local_cs = 0;
-                if ($c1 != $c2) {
+                if ($c1 !== $c2) {
                     $c1 = $c2 = min($c1, $c2); // using min allows the computation of transpositions
                 }
+
                 if ($maxDistance) {
                     $temporaryDistance = max($c1, $c2) - $lcss + $trans;
                     if ($temporaryDistance > $maxDistance) {
@@ -124,13 +178,14 @@ if (!function_exists('sift4_distance')) {
                 // if matching characters are found, remove 1 from both cursors (they get incremented at the end of the loop)
                 // so that we can have only one code block handling matches
                 for ($i = 0; $i < $maxOffset && ($c1 + $i < $l1 || $c2 + $i < $l2); ++$i) {
-                    if (($c1 + $i < $l1) && (substr($s1, $c1 + $i, 1) == substr($s2, $c2, 1))) {
+                    if (($c1 + $i < $l1) && ($s1[$c1 + $i] === $s2[$c2])) {
                         $c1 += $i - 1;
                         --$c2;
 
                         break;
                     }
-                    if (($c2 + $i < $l2) && (substr($s1, $c1, 1) == substr($s2, $c2 + $i, 1))) {
+
+                    if (($c2 + $i < $l2) && ($s1[$c1] === $s2[$c2 + $i])) {
                         --$c1;
                         $c2 += $i - 1;
 
