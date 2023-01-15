@@ -133,13 +133,21 @@ final class Mailcheck
             return [substr($email, 0, $lastAtPos), substr($email, $lastAtPos + 1)];
         }
 
-        return [null, null];
+        return ['', ''];
+    }
+
+    public static function normalizeEmail(string $email): ?string
+    {
+        $email = mb_strtolower(trim($email));
+
+        // return filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : null;
+        return $email;
     }
 
     private function scanEmail(string $email): bool
     {
-        $this->originalAddress = mb_strtolower(trim($email));
-        if (!filter_var($this->originalAddress, FILTER_VALIDATE_EMAIL)) {
+        $this->originalAddress = self::normalizeEmail($email);
+        if (blank($this->originalAddress)) {
             return false;
         }
 
