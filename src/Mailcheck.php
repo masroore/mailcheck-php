@@ -167,7 +167,7 @@ final class Mailcheck
         return true;
     }
 
-    private static function findClosestDomain(string $domain, array $domains, ?callable $distanceFunction, int $threshold): ?string
+    public static function findClosestDomain(string $domain, array $domains, ?callable $distanceFunction, int $threshold): ?string
     {
         $minDist = 99;
         /** @var : ?string $closest_domain */

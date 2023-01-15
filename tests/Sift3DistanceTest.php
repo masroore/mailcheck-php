@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Kaiju\Mailcheck\Tests;
 
-use PHPUnit\Framework\TestCase;
-
-final class Sift3DistanceTest extends TestCase
+final class Sift3DistanceTest extends BaseTestCase
 {
     public function testSift3Distance(): void
     {
