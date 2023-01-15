@@ -21,7 +21,7 @@ if (!function_exists('same_string')) {
 }
 
 if (!function_exists('sift3_distance')) {
-    function sift3_distance(string $a, string $b, int $maxOffset = 5): int
+    function sift3_distance(string $a, string $b, int $maxOffset = 5): float
     {
         $len_a = strlen($a);
         $len_b = strlen($b);
@@ -56,7 +56,7 @@ if (!function_exists('sift3_distance')) {
             ++$c;
         }
 
-        return (int) (($len_a + $len_b) / 2) - $lcs;
+        return (float) (($len_a + $len_b) / 2) - $lcs;
     }
 }
 
