@@ -9,39 +9,7 @@ final class Mailcheck
     /**
      * @var string[]
      */
-    private array $domains = [
-        'aim.com',
-        'aol.com',
-        'att.net',
-        'bellsouth.net',
-        'btinternet.com',
-        'charter.net',
-        'comcast.net',
-        'cox.net',
-        'earthlink.net',
-        'fastmail.com',
-        'gmail.com',
-        'google.com',
-        'googlemail.com',
-        'icloud.com',
-        'mac.com',
-        'me.com',
-        'msn.com',
-        'optonline.net',
-        'optusnet.com.au',
-        'qq.com',
-        'rocketmail.com',
-        'rogers.com',
-        'sbcglobal.net',
-        'shaw.ca',
-        'sky.com',
-        'sympatico.ca',
-        'telus.net',
-        'verizon.net',
-        'web.de',
-        'xtra.co.nz',
-        'ymail.com',
-    ];
+    private array $domains = Domains::FREQUENTLY_USED_DOMAINS;
 
     /**
      * @var string[]
